@@ -9,20 +9,16 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
-public class MonitoringHandler implements RequestHandler<List<String>, String> {
+public class MonitoringHandler implements RequestHandler<CheckRequest, String> {
 
     private static final Logger LOG = LogManager.getLogger(MonitoringHandler.class);
 
     @Override
-    public String handleRequest(List<String> strings, Context context) {
-        LOG.info("Received request");
-
-        for (String s: strings) {
-            checkStatus(s);
-        }
-        return "Completed request";
+    public String handleRequest(CheckRequest request, Context context) {
+        LOG.info("Received check request");
+        checkStatus(request.getUrl());
+        return "Completed check request";
     }
 
     private void checkStatus(String url) {
