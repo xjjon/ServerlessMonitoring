@@ -17,19 +17,26 @@ public class MonitoringHandler implements RequestHandler<CheckRequest, String> {
     @Override
     public String handleRequest(CheckRequest request, Context context) {
         LOG.info("Received check request");
-        checkStatus(request.getUrl());
+        checkStatus(request);
         return "Completed check request";
     }
 
-    private void checkStatus(String url) {
+    private void checkStatus(CheckRequest checkRequest) {
         try {
-            URL websiteUrl = new URL(url);
+            URL websiteUrl = new URL(checkRequest.getUrl());
             HttpURLConnection connection = (HttpURLConnection) websiteUrl.openConnection();
-            LOG.info(connection.getResponseCode() + " " + connection.getResponseMessage());
+            if(connection.getResponseCode() == checkRequest.getExpectedStatusCode()) {
+                LOG.info(connection.getResponseCode() + " " + connection.getResponseMessage());
+            } else {
+                LOG.error("Check failed on {}. Expected {}. Received {} with message {}.",
+                        checkRequest.getUrl(),
+                        checkRequest.getExpectedStatusCode(),
+                        connection.getResponseMessage());
+            }
         } catch (MalformedURLException e) {
-            LOG.error("Malformed URL: " + url, e);
+            LOG.error("Malformed URL: " + checkRequest.getUrl(), e);
         } catch (IOException e) {
-            LOG.error(e);
+            LOG.error(e + checkRequest.getUrl());
         }
 
     }
