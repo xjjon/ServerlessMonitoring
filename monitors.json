@@ -1,0 +1,10 @@
+[
+  {
+    "url": "https://www.jonathanyu.xyz",
+    "expectedStatusCode": 200
+  },
+  {
+    "url": "https://www.lumisent.com",
+    "expectedStatusCode": 200
+  }
+]

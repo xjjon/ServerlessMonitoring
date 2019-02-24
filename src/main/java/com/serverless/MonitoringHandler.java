@@ -11,18 +11,26 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
-public class MonitoringHandler implements RequestHandler<CheckRequest, String> {
+public class MonitoringHandler implements RequestHandler<Map<String, List<CheckRequest>>, String> {
 
     private static final Logger LOG = LogManager.getLogger(MonitoringHandler.class);
+
     private static final String TOPIC_ARN = "arn:aws:sns:us-east-1:293955204652:monitoring-tool-dev-MonitoringNotificationTopic-6MZ276O8LXWR";
+    private static final String MONITORS = "monitors";
+
     private static AmazonSNS SNS = AmazonSNSClient.builder().build();
 
     @Override
-    public String handleRequest(CheckRequest request, Context context) {
-        LOG.info("Received check request");
-        checkStatus(request);
-        return "Completed check request";
+    public String handleRequest(Map<String, List<CheckRequest>> input, Context context) {
+        List<CheckRequest> requests = input.get(MONITORS);
+        LOG.info("Received request with {} monitors.", requests.size());
+        for (CheckRequest request : requests) {
+            checkStatus(request);
+        }
+        return "Completed check request.";
     }
 
     private void checkStatus(CheckRequest checkRequest) {
@@ -32,7 +40,7 @@ public class MonitoringHandler implements RequestHandler<CheckRequest, String> {
             CheckResponse response = getResponse(checkRequest, connection);
 
             if(response.isValid()) {
-                LOG.info("Check succeeded on {}. Response: {}, {}",
+                LOG.info("Check succeeded on {}. Response: {}, {}.",
                         checkRequest.getUrl(),
                         response.getStatusCode(),
                         response.getStatusMessage());
@@ -49,7 +57,7 @@ public class MonitoringHandler implements RequestHandler<CheckRequest, String> {
         } catch (MalformedURLException e) {
             LOG.error("Malformed URL: " + checkRequest.getUrl(), e);
         } catch (IOException e) {
-            LOG.error(e + checkRequest.getUrl());
+            LOG.error("IO Exception at {}, ", checkRequest.getUrl(), e);
         }
     }
 
