@@ -29,21 +29,31 @@ public class MonitoringHandler implements RequestHandler<CheckRequest, String> {
         try {
             URL websiteUrl = new URL(checkRequest.getUrl());
             HttpURLConnection connection = (HttpURLConnection) websiteUrl.openConnection();
-            if(connection.getResponseCode() == checkRequest.getExpectedStatusCode()) {
-                LOG.info("Check succeeded on {}. Response: {}, {}",checkRequest.getUrl(), connection.getResponseCode(), connection.getResponseMessage());
+            CheckResponse response = getResponse(checkRequest, connection);
+
+            if(response.isValid()) {
+                LOG.info("Check succeeded on {}. Response: {}, {}",
+                        checkRequest.getUrl(),
+                        response.getStatusCode(),
+                        response.getStatusMessage());
             } else {
                 String errorMessage = String.format("Check failed on %s. Expected %s. Received %s with message %s.",
                         checkRequest.getUrl(),
                         checkRequest.getExpectedStatusCode(),
-                        connection.getResponseCode(),
-                        connection.getResponseMessage());
+                        response.getStatusCode(),
+                        response.getStatusMessage());
                 LOG.error(errorMessage);
                 SNS.publish(TOPIC_ARN, errorMessage);
             }
+
         } catch (MalformedURLException e) {
             LOG.error("Malformed URL: " + checkRequest.getUrl(), e);
         } catch (IOException e) {
             LOG.error(e + checkRequest.getUrl());
         }
+    }
+
+    private CheckResponse getResponse(CheckRequest request, HttpURLConnection connection) throws IOException {
+        return new CheckResponse(request, connection.getResponseCode(), connection.getResponseMessage());
     }
 }
