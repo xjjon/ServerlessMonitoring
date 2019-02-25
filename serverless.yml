@@ -22,7 +22,7 @@ package:
 
 functions:
   monitoring:
-    handler: com.serverless.MonitoringHandler
+    handler: com.serverless.MonitorHandler
     events:
       - schedule:
           rate: rate(${self:custom.frequency})

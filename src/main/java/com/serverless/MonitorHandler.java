@@ -14,9 +14,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-public class MonitoringHandler implements RequestHandler<Map<String, List<CheckRequest>>, String> {
+public class MonitorHandler implements RequestHandler<Map<String, List<CheckRequest>>, String> {
 
-    private static final Logger LOG = LogManager.getLogger(MonitoringHandler.class);
+    private static final Logger LOG = LogManager.getLogger(MonitorHandler.class);
 
     private static final String TOPIC_ARN = "arn:aws:sns:us-east-1:293955204652:monitoring-tool-dev-MonitoringNotificationTopic-6MZ276O8LXWR";
     private static final String MONITORS = "monitors";

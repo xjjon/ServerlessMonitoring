@@ -10,9 +10,7 @@ public class CheckRequest {
         this.expectedStatusCode = expectedStatusCode;
     }
 
-    public CheckRequest() {
-
-    }
+    public CheckRequest() { }
 
     public String getUrl() {
         return url;
