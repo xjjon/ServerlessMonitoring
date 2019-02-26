@@ -11,13 +11,13 @@ The goals of this service is to:
 
 Uses the following Amazon Web Services (AWS) services:
 
-Lambda
-CloudFormation
-CloudWatch
-IAM
-S3
-SES (optional)
-SNS (optional)
+* Lambda
+* CloudFormation
+* CloudWatch
+* IAM
+* S3
+* SES (optional)
+* SNS (optional)
 
 The monitor will check status at the configured interval and assert the expected status. 
 If the assert fails then a notification will be generated.
