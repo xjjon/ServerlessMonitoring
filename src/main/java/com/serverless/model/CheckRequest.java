@@ -3,11 +3,13 @@ package com.serverless.model;
 public class CheckRequest {
 
     private String url;
-    private int expectedStatusCode;
+    private Integer expectedStatusCode;
+    private String expectedResponseMessage;
 
-    public CheckRequest(String url, int expectedStatusCode) {
+    public CheckRequest(String url, Integer expectedStatusCode, String expectedResponseMessage) {
         this.url = url;
         this.expectedStatusCode = expectedStatusCode;
+        this.expectedResponseMessage = expectedResponseMessage;
     }
 
     public CheckRequest() { }
@@ -16,8 +18,12 @@ public class CheckRequest {
         return url;
     }
 
-    public int getExpectedStatusCode() {
+    public Integer getExpectedStatusCode() {
         return expectedStatusCode;
+    }
+
+    public String getExpectedResponseMessage() {
+        return expectedResponseMessage;
     }
 
     public void setUrl(String url) {
@@ -26,5 +32,9 @@ public class CheckRequest {
 
     public void setExpectedStatusCode(int expectedStatusCode) {
         this.expectedStatusCode = expectedStatusCode;
+    }
+
+    public void setExpectedResponseMessage(String expectedResponseMessage) {
+        this.expectedResponseMessage = expectedResponseMessage;
     }
 }

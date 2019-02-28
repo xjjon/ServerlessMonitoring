@@ -1,10 +1,12 @@
 [
   {
     "url": "https://www.jonathanyu.xyz",
-    "expectedStatusCode": 200
+    "expectedStatusCode": 200,
+    "expectedResponseMessage": "OK"
   },
   {
     "url": "https://www.lumisent.com",
-    "expectedStatusCode": 200
+    "expectedStatusCode": 200,
+    "expectedResponseMessage": "OK"
   }
 ]

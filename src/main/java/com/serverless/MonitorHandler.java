@@ -47,9 +47,10 @@ public class MonitorHandler implements RequestHandler<Map<String, List<CheckRequ
                         response.getStatusCode(),
                         response.getStatusMessage());
             } else {
-                String errorMessage = String.format("Check failed on %s. Expected %s. Received %s with message %s.",
+                String errorMessage = String.format("Check failed on %s. Expected %s - %s. Received %s with response %s.",
                         checkRequest.getUrl(),
                         checkRequest.getExpectedStatusCode(),
+                        checkRequest.getExpectedResponseMessage(),
                         response.getStatusCode(),
                         response.getStatusMessage());
                 LOG.error(errorMessage);

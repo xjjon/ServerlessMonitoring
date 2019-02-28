@@ -13,7 +13,17 @@ public class CheckResponse {
     }
 
     public boolean isValid() {
-        return getCheckRequest().getExpectedStatusCode() == statusCode;
+        boolean isValid = true;
+        Integer expectedStatusCode = getCheckRequest().getExpectedStatusCode();
+        if (expectedStatusCode != null && expectedStatusCode != statusCode) {
+            isValid = false;
+        }
+
+        String expectedMessage = getCheckRequest().getExpectedResponseMessage();
+        if (expectedMessage != null && !expectedMessage.equals(statusMessage)) {
+            isValid = false;
+        }
+        return isValid;
     }
 
     public CheckRequest getCheckRequest() {
