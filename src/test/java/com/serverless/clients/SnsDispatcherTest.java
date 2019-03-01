@@ -10,7 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class SnsDispatcherTest {
+public class SnsDispatcherTest {
 
     private static final String TOPIC_ARN = "TOPIC_ARN";
     private static final String TEST_MESSAGE = "Test Message";
@@ -19,14 +19,14 @@ class SnsDispatcherTest {
     private AmazonSNS mockClient;
 
     @Test
-    void dispatch() {
+    public void dispatch() {
         SnsDispatcher dispatcher = new SnsDispatcher(mockClient, TOPIC_ARN);
         dispatcher.dispatch(TEST_MESSAGE);
         Mockito.verify(mockClient).publish(TOPIC_ARN, TEST_MESSAGE);
     }
 
     @Test
-    void dispatchException() {
+    public void dispatchException() {
         Mockito.when(mockClient.publish(TOPIC_ARN, TEST_MESSAGE))
                 .thenThrow(new AmazonClientException("Exception"));
         SnsDispatcher dispatcher = new SnsDispatcher(mockClient, TOPIC_ARN);
