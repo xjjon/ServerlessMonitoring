@@ -41,7 +41,7 @@ public class MonitorHandler implements RequestHandler<Map<String, List<CheckRequ
             HttpURLConnection connection = (HttpURLConnection) websiteUrl.openConnection();
             CheckResponse response = getResponse(checkRequest, connection);
 
-            if(response.isValid()) {
+            if (response.isValid()) {
                 LOG.info("Check succeeded on {}. Response: {}, {}.",
                         checkRequest.getUrl(),
                         response.getStatusCode(),
