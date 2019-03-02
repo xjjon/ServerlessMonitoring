@@ -6,6 +6,7 @@ import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.serverless.model.CheckRequest;
 import com.serverless.model.CheckResponse;
+import com.serverless.clients.SnsDispatcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,11 +25,16 @@ public class MonitorHandler implements RequestHandler<Map<String, List<CheckRequ
     private static final String MONITORS = "monitors";
 
     private static AmazonSNS SNS = AmazonSNSClient.builder().build();
+    
+    private NotificationDispatcher dispatcher;
 
     @Override
     public String handleRequest(Map<String, List<CheckRequest>> input, Context context) {
         List<CheckRequest> requests = input.get(MONITORS);
         LOG.info("Received request with {} monitors.", requests.size());
+        
+        dispatcher = new SnsDispatcher(SNS, TOPIC_ARN);
+        
         for (CheckRequest request : requests) {
             checkStatus(request);
         }
@@ -54,7 +60,7 @@ public class MonitorHandler implements RequestHandler<Map<String, List<CheckRequ
                         response.getStatusCode(),
                         response.getStatusMessage());
                 LOG.error(errorMessage);
-                SNS.publish(TOPIC_ARN, errorMessage);
+                dispatcher.dispatch(errorMessage);
             }
 
         } catch (MalformedURLException e) {
