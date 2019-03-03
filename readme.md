@@ -1,15 +1,15 @@
-# Monitoring - Serverless Service
+# Monitoring - Serverless Library
 
 ### Overview
 
-Simple monitoring service that leverages [serverless framework](https://github.com/serverless/serverless).
+Simple monitoring library that leverages [serverless framework](https://github.com/serverless/serverless).
 
-The goals of this service is to:
+The goals of this library are to:
 
 * Provide a simple interface to monitor website health
 * Provide a low-overhead and cost effective solution
 
-Uses the following Amazon Web Services (AWS) services:
+The library uses the following Amazon Web Services (AWS) services:
 
 * Lambda
 * CloudFormation
@@ -38,3 +38,4 @@ If the assert fails then a notification will be generated.
           }
         ]
     ```
+3) Run `serverless deploy`
