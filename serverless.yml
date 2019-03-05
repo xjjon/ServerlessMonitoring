@@ -3,6 +3,7 @@ service: monitoring-tool
 custom:
   email: jonathan.yu93@gmail.com
   frequency: 30 minutes
+  topicArn: arn:aws:sns:us-east-1:293955204652:monitoring-tool-dev-MonitoringNotificationTopic-6MZ276O8LXWR
 
 provider:
   name: aws
@@ -23,6 +24,8 @@ package:
 functions:
   monitoring:
     handler: com.serverless.MonitorHandler
+    environment:
+      topicArn: ${self:custom.topicArn}
     events:
       - schedule:
           rate: rate(${self:custom.frequency})

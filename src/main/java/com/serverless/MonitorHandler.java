@@ -21,11 +21,9 @@ public class MonitorHandler implements RequestHandler<Map<String, List<CheckRequ
 
     private static final Logger LOG = LogManager.getLogger(MonitorHandler.class);
 
-    private static final String TOPIC_ARN = "arn:aws:sns:us-east-1:293955204652:monitoring-tool-dev-MonitoringNotificationTopic-6MZ276O8LXWR";
     private static final String MONITORS = "monitors";
 
     private static AmazonSNS SNS = AmazonSNSClient.builder().build();
-    
     private NotificationDispatcher dispatcher;
 
     @Override
@@ -33,7 +31,7 @@ public class MonitorHandler implements RequestHandler<Map<String, List<CheckRequ
         List<CheckRequest> requests = input.get(MONITORS);
         LOG.info("Received request with {} monitors.", requests.size());
         
-        dispatcher = new SnsDispatcher(SNS, TOPIC_ARN);
+        dispatcher = new SnsDispatcher(SNS, System.getenv("topicArn"));
         
         for (CheckRequest request : requests) {
             checkStatus(request);
