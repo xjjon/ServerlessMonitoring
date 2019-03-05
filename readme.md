@@ -25,6 +25,9 @@ If the assert fails then a notification will be generated.
 ### Quick Start
 
 1) Configure `custom` values in `serverless.yml`.
+    * email: email to receive notification on failures (SNS will require verification)
+    * frequency: frequency to perform check (seconds, minutes, hours, i.e. 30 seconds)
+    * topicArn: your sns topic ARN
 2) Configure your monitors in `monitors.json`.
     ```
         [
