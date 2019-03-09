@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 public class RequestChecker {
@@ -16,9 +15,11 @@ public class RequestChecker {
     private static final Logger LOG = LogManager.getLogger(RequestChecker.class);
 
     private final NotificationDispatcher dispatcher;
+    private final ConnectionHandler connectionHandler;
 
-    public RequestChecker(NotificationDispatcher dispatcher) {
+    public RequestChecker(NotificationDispatcher dispatcher, ConnectionHandler connectionHandler) {
         this.dispatcher = dispatcher;
+        this.connectionHandler = connectionHandler;
     }
 
     public void checkRequests(List<CheckRequest> requests) {
@@ -29,8 +30,7 @@ public class RequestChecker {
 
     private void checkStatus(CheckRequest checkRequest) {
         try {
-            URL websiteUrl = new URL(checkRequest.getUrl());
-            HttpURLConnection connection = (HttpURLConnection) websiteUrl.openConnection();
+            HttpURLConnection connection = connectionHandler.getConnection(checkRequest.getUrl());
             CheckResponse response = getResponse(checkRequest, connection);
 
             if (response.isValid()) {

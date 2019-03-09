@@ -28,7 +28,7 @@ public class MonitorHandler implements RequestHandler<Map<String, List<CheckRequ
         
         dispatcher = new SnsDispatcher(SNS, System.getenv("topicArn"));
         
-        RequestChecker requestChecker = new RequestChecker(dispatcher);
+        RequestChecker requestChecker = new RequestChecker(dispatcher, new ConnectionHandler());
         requestChecker.checkRequests(requests);
 
         return "Completed check request.";
