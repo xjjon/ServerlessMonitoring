@@ -1,9 +1,9 @@
 service: monitoring-tool
 
 custom:
-  email: jonathan.yu93@gmail.com
+  email: ${YOUR_EMAIL}
   frequency: 30 minutes
-  topicArn: arn:aws:sns:us-east-1:293955204652:monitoring-tool-dev-MonitoringNotificationTopic-6MZ276O8LXWR
+  topicArn: ${YOUR_TOPIC_ARN}
 
 provider:
   name: aws
